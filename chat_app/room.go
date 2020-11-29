@@ -14,6 +14,7 @@ type room struct {
 	clients map[*client]bool
 }
 
+//constructor
 func newRoom() *room {
 	return &room{
 		forward: make(chan []byte),
@@ -63,6 +64,6 @@ func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	defer func() {
 		r.leave <- client
 	}()
-	go client.write()
-	client.read()
+	go client.writeToClientSocket()
+	client.readFromClientSocket()
 }

@@ -31,10 +31,14 @@ func main() {
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/room", r)
 
-	//starts the room in a separate thread
+	//starts the room in a separate thread, otherwise either the room or the server will block!
 	go r.run()
 
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
 	}
 }
+
+//Server Thread
+//Room Thread
+//New Client comes in: 1 write to socket thread, 1 read from socket thread
