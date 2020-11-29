@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/thangpham7793/go_blueprint/trace"
+
 	"github.com/gorilla/websocket"
 )
 
@@ -12,6 +14,7 @@ type room struct {
 	join    chan *client
 	leave   chan *client
 	clients map[*client]bool
+	tracer  trace.Tracer
 }
 
 //constructor
@@ -31,6 +34,7 @@ func (r *room) run() {
 		//add the client pointer to the map and mark them as active
 		case client := <-r.join:
 			r.clients[client] = true
+			r.tracer.Trace("New Client Joined!")
 
 		//remove a client pointer from the map when they leave (as in they join the leave channel)
 		case client := <-r.leave:
