@@ -1,4 +1,4 @@
-module chat_app
+module go_blueprint
 
 go 1.15
 
