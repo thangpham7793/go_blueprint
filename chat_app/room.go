@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/thangpham7793/go_blueprint/trace"
+	"chat_app/trace"
 
 	"github.com/gorilla/websocket"
 )
@@ -40,11 +40,13 @@ func (r *room) run() {
 		case client := <-r.leave:
 			delete(r.clients, client)
 			close(client.send)
-
+			r.tracer.Trace("Client left!")
 		//forward all messages received to the send channel of each client
 		case msg := <-r.forward:
+			r.tracer.Trace("Received: ", string(msg))
 			for client := range r.clients {
 				client.send <- msg
+				r.tracer.Trace("Sent to client")
 			}
 		}
 	}

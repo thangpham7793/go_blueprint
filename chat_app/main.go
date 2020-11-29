@@ -1,10 +1,12 @@
 package main
 
 import (
+	"chat_app/trace"
 	"flag"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"sync"
 )
@@ -29,6 +31,7 @@ func main() {
 	var addr = flag.String("addr", ":8080", "The addr of the app")
 	flag.Parse()
 	r := newRoom()
+	r.tracer = trace.New(os.Stdout)
 	//pass in a pointer since the pointer implements the Handler interface, which has only the ServeHTTP method! http.HandleFunc doesn't work because it requires a function with the same signature, whicle the method pointer has 3 args (the type itself)
 	http.Handle("/", &templateHandler{filename: "chat.html"})
 	http.Handle("/room", r)
