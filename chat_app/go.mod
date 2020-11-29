@@ -1,4 +1,4 @@
-module github.com/thangpham7793/go_blueprint/chat_app
+module chat_app
 
 go 1.15
 
