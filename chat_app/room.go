@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io"
 	"log"
 	"net/http"
 
@@ -26,6 +27,17 @@ func newRoom() *room {
 		clients: make(map[*client]bool),
 		tracer:  trace.Off(),
 	}
+}
+
+//WithTracer adds a tracer to the room (Builder Pattern)
+func (r *room) WithTracer(w io.Writer) *room {
+	r.tracer = trace.New(w)
+	return r
+}
+
+//RemoveTracer removes the current tracer from the room
+func (r *room) RemoveTracer() {
+	r.tracer = trace.Off()
 }
 
 func (r *room) run() {
