@@ -31,7 +31,7 @@ func main() {
 	flag.Parse()
 	r := newRoom().WithTracer(os.Stdout)
 	//pass in a pointer since the pointer implements the Handler interface, which has only the ServeHTTP method! http.HandleFunc doesn't work because it requires a function with the same signature, whicle the method pointer has 3 args (the type itself)
-	http.Handle("/", &templateHandler{filename: "chat.html"})
+	http.Handle("/", withLogger(mustAuth(&templateHandler{filename: "chat.html"}), os.Stdout))
 	http.Handle("/room", r)
 
 	//starts the room in a separate thread, otherwise either the room or the server will block!
