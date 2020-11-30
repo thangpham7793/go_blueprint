@@ -23,3 +23,12 @@ func (t *tracer) Trace(a ...interface{}) {
 	fmt.Fprint(t.out, a...)
 	fmt.Println(t.out)
 }
+
+type nilTracer struct{}
+
+func (n *nilTracer) Trace(a ...interface{}) {}
+
+//Off creates a nil tracer that ignores calls to Trace()
+func Off() Tracer {
+	return &nilTracer{}
+}
